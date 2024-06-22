@@ -30,22 +30,15 @@
                 <input type="hidden" name="from_name" value="Fuerta.UK">
 
                 <div class="row g-3">
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <label class="form-label" for="entryDate">Fecha de entrada</label>
-                            <select class="form-select" id="entryDate" required name="entryDate">
-                                <option value="">Choose...</option>
-                                <option>Mr</option>
-                                <option>Ms</option>
-                                <option>Mrs</option>
-                                <option>Miss</option>
-                                <option>Dr</option>
-                            </select>
+                            <input class="form-control" id="entryDate" placeholder="" required type="date" value="" name="entryDate">
                             <div class="invalid-feedback">
-                                Please select a valid Salutation.
+                                Valid first name is required.
                             </div>
                         </div>
 
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <label class="form-label" for="nationality">Pais de Nacionalidad</label>
                             <select class="form-select" id="nationality" required name="nationality">
                                 <option value="">Elegir...</option>
@@ -271,7 +264,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <label class="form-label" for="documentType">Tipo Documento</label>
                             <select class="form-select" id="documentType" required name="documentType">
                                 <option value="">Elegir...</option>
@@ -319,12 +312,11 @@
 
                     <div class="col-5">
                         <label class="form-label" for="phone">Phone</label>
-                            <input class="form-control" id="phone" placeholder="0 7470 123 456" required type="tel"
-                                name="phone">
-                            <div class="invalid-feedback">
-                                Please enter a valid phone number.
-                            </div>
+                        <input class="form-control" id="phone" placeholder="0 7470 123 456" required type="tel" name="phone">
+                        <div class="invalid-feedback">
+                            Please enter a valid phone number.
                         </div>
+                    </div>
 
                     <div class="col-7">
                         <label class="form-label" for="email">Email</label>
