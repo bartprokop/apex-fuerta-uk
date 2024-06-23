@@ -301,7 +301,7 @@
                         <div class="col-sm-4">
                             <label class="form-label" for="firstName">Nombre</label>
                             <input class="form-control" id="firstName" placeholder="" required type="text" value="" name="firstName">
-                            <div class="invalid-feedback">First name is required.</div>
+                            <div class="invalid-feedback">Su nombre es requerido.</div>
                         </div>
 
                         <div class="col-sm-4">
@@ -323,54 +323,17 @@
                         </div>
                     </div>
 
-                    <div class="col-5">
-                        <label class="form-label" for="phone">Phone</label>
-                        <input class="form-control" id="phone" placeholder="0 7470 123 456" required type="tel"
-                            name="phone">
-                        <div class="invalid-feedback">
-                            Please enter a valid phone number.
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="form-label" for="gender">Sexo</label>
+                            <select class="form-select" id="gender" required name="gender">
+                                <option value="">Elegir...</option>
+                                <option value="F">Femenino</option>
+                                <option value="M">Masculino</option>
+                            </select>
+                            <div class="invalid-feedback">Tu sexo es requerido.</div>
                         </div>
-                    </div>
 
-                    <div class="col-7">
-                        <label class="form-label" for="email">Email</label>
-                        <input class="form-control" id="email" placeholder="you@example.com" required type="email"
-                            name="email">
-                        <div class="invalid-feedback">
-                            Please enter a valid email address.
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label" for="address1">Address Line 1</label>
-                        <input class="form-control" id="address1" placeholder="1234 Main St" required type="text"
-                            name="address1">
-                        <div class="invalid-feedback">
-                            Please enter your shipping address.
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label" for="address2">Address Line 2 <span
-                                class="text-muted">(Optional)</span></label>
-                        <input class="form-control" id="address2" placeholder="Apartment or suite" type="text"
-                            name="address2">
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label" for="zip">Post code</label>
-                        <input class="form-control" id="zip" placeholder="" required type="text" name="zip">
-                        <div class="invalid-feedback">
-                            Post code required.
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <label class="form-label" for="city">City</label>
-                        <input class="form-control" id="city" placeholder="" required type="text" name="city">
-                        <div class="invalid-feedback">
-                            Post code required.
-                        </div>
                     </div>
 
                     <hr class="my-4">
