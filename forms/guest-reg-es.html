@@ -14,31 +14,31 @@
 <div class="container">
     <main>
         <div class="py-5 text-center">
-            <h1>Physio Effect JB Ltd</h1>
+            <h1>My Fuerta Ltd</h1>
             <h2>Formulario de registro de invitados</h2>
             <p class="lead">Necesitamos recopilar algunos de sus datos personales para registrar su estancia en la Guardia Civil. Sus datos no serán compartidos con otras partes.</p>
         </div>
 
         <div>
-            <h4 class="mb-3">Your contact data</h4>
+            <h4 class="mb-3">Datos de tu estancia</h4>
             <form id="reg-form" class="needs-validation" novalidate method="POST" action="https://api.web3forms.com/submit">
-                <input type="hidden" name="access_key" value="ac38bcdc-3a96-4589-8f05-09dd0d94674b" />
+                <input type="hidden" name="access_key" value="6ba59c4b-252f-4702-840b-70b4560954b9" />
                 <input type="hidden" name="redirect" value="https://fuerta.uk/forms/success-es.html">
                 <input type="hidden" name="subject" value="New Guest Registration">
                 <input type="hidden" name="from_name" value="Fuerta.UK">
 
                 <div class="row g-3">
                         <div class="col-sm-3">
-                            <label class="form-label" for="entryDate">Fecha de entrada</label>
-                            <input class="form-control" id="entryDate" placeholder="" required type="date" value="" name="entryDate">
+                            <label class="form-label" for="checkinDate">Fecha de entrada</label>
+                            <input class="form-control" id="checkinDate" placeholder="" required type="date" value="" name="checkinDate">
                             <div class="invalid-feedback">
                                 Por favor introduzca la fecha de entrada válida.
                             </div>
                         </div>
 
                         <div class="col-sm-5">
-                            <label class="form-label" for="nationality">Pais de Nacionalidad</label>
-                            <select class="form-select" id="nationality" required name="nationality">
+                            <label class="form-label" for="countryOfNationality">Pais de Nacionalidad</label>
+                            <select class="form-select" id="countryOfNationality" required name="countryOfNationality">
                                 <option value="">Elegir...</option>
                                 <option value="ESPAÑA">ESPAÑA</option>
                                 <option value="">-------------------------</option>
@@ -276,7 +276,19 @@
                                 Por favor seleccione un tipo de documento válido.
                             </div>
                         </div>
-
+                </div>
+                    
+                <div class="row g-3">
+                    <div class="col-sm-3">
+                        <label class="form-label" for="dateOfIssue">Fecha Expedición</label>
+                        <input class="form-control" id="dateOfIssue" placeholder="" required type="date" value="" name="dateOfIssue">
+                        <div class="invalid-feedback">
+                            Por favor introduzca la fecha de expedición válida.
+                        </div>
+                    </div>
+            </div>
+                    
+                <div class="row g-3">
                     <div class="col-sm-4">
                         <label class="form-label" for="firstName">Nombre</label>
                         <input class="form-control" id="firstName" placeholder="" required type="text" value="" name="firstName">
@@ -300,6 +312,7 @@
                             Se requiere segundo apellido.
                         </div>
                     </div>
+                </div>
 
                     <div class="col-5">
                         <label class="form-label" for="phone">Phone</label>
@@ -345,43 +358,6 @@
                             Post code required.
                         </div>
                     </div>
-
-<!--                    <div class="col-md-5">-->
-<!--                        <label class="form-label" for="county">County</label>-->
-<!--                        <select class="form-select" id="county" required name="county">-->
-<!--                            <option value="">Choose...</option>-->
-<!--                            <option value="">&#45;&#45; Northern Ireland &#45;&#45;</option>-->
-<!--                            <option>Antrim</option>-->
-<!--                            <option>Armagh</option>-->
-<!--                            <option>City of Belfast</option>-->
-<!--                            <option>Down</option>-->
-<!--                            <option>Fermanagh</option>-->
-<!--                            <option>Londonderry</option>-->
-<!--                            <option>City of Derry</option>-->
-<!--                            <option>Tyrone</option>-->
-<!--                            <option value="">&#45;&#45; &#45;&#45;</option>-->
-<!--                            <option>Other</option>-->
-<!--                        </select>-->
-<!--                        <div class="invalid-feedback">-->
-<!--                            Please provide a valid state.-->
-<!--                        </div>-->
-<!--                    </div>-->
-
-<!--                    <div class="col-md-4">-->
-<!--                        <label class="form-label" for="country">Country</label>-->
-<!--                        <select class="form-select" id="country" required name="country">-->
-<!--                            <option>Northern Ireland</option>-->
-<!--                            <option>Ireland</option>-->
-<!--                            <option>United Kingdom</option>-->
-<!--                            <option>England</option>-->
-<!--                            <option>Wales</option>-->
-<!--                            <option>Scotland</option>-->
-<!--                        </select>-->
-<!--                        <div class="invalid-feedback">-->
-<!--                            Please select a valid country.-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
 
                 <hr class="my-4">
 
