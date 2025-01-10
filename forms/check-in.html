@@ -22,10 +22,11 @@
                 <hr>
                 <h1>My Fuerta Ltd</h1>
                 <h2>Guest registration form</h2>
-                <h3>Why we collect data</h3>
-                <p class="lead">
-Spain has recently implemented new regulations affecting short-term rental accommodations, including those listed on platforms like Airbnb. These measures aim to enhance transparency, combat illegal rentals, and address housing shortages in popular tourist destinations.
-
+                <h3 class="text-left">Why we collect data</h3>
+                <p class="lead text-left">
+		    Spain has recently implemented new regulations affecting short-term rental accommodations, including those listed on platforms like Airbnb. These measures aim to enhance transparency, combat illegal rentals, and address housing shortages in popular tourist destinations.
+                </p>
+                <p class="">
 <b>Royal Decree 933/2021</b>: Effective December 2, 2024, Royal Decree 933/2021 mandates that all lodging providers in Spain collect and report detailed information about their guests to the Ministry of Interior. This includes personal identification details and specifics of the rental transaction. Hosts are required to:
 <ul>
 <li>Register their accommodation with the Ministry of Interior.
@@ -37,13 +38,67 @@ Non-compliance can result in fines up to €30,000.
             </div>
 
             <div>
-                <h4 class="mb-3">Details of your stay</h4>
-                <form id="reg-form" class="needs-validation" novalidate method="POST"
-                    action="https://api.web3forms.com/submit">
+                <h4 class="mb-3">Data of the holder</h4>
+                <form id="reg-form" class="needs-validation" novalidate method="POST" action="https://api.web3forms.com/submit">
                     <input type="hidden" name="access_key" value="6ba59c4b-252f-4702-840b-70b4560954b9" />
                     <input type="hidden" name="redirect" value="https://fuerta.uk/forms/success-en.html">
                     <input type="hidden" name="subject" value="New Guest Registration">
                     <input type="hidden" name="from_name" value="Fuerta.UK">
+
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <label class="form-label" for="firstName">First name</label>
+                            <input class="form-control" id="firstName" placeholder="" required type="text" value="" name="firstName">
+                            <div class="invalid-feedback">Your name is required</div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label class="form-label" for="lastName1">Last name</label>
+                            <input class="form-control" id="lastName1" placeholder="" required type="text" value=""
+                                name="lastName1">
+                            <div class="invalid-feedback">Fist sur-name is required.</div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label class="form-label" for="lastName2">Seconds sur-name</label>
+                            <input class="form-control" id="lastName2" placeholder="" type="text" value=""
+                                name="lastName2">
+                            <div class="invalid-feedback">
+                                Se requiere segundo apellido.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <label class="form-label" for="dateOfBirth">Date of birth</label>
+                            <input class="form-control" id="dateOfBirth" placeholder="" required type="date" value="" name="dateOfBirth">
+                            <div class="invalid-feedback">Your date of birth is required.</div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label class="form-label" for="nationality">Date of birth</label>
+                            <input class="form-control" id="nationality" placeholder="" required type="date" value="" name="nationality">
+                            <div class="invalid-feedback">Your nationality is required.</div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label class="form-label" for="gender">Sex</label>
+                            <select class="form-select" id="gender" required name="gender">
+                                <option value="">Select...</option>
+                                <option value="F">Female</option>
+                                <option value="M">Male</option>
+                            </select>
+                            <div class="invalid-feedback">It is required to provide your sex.</div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
 
                     <div class="row g-3">
                         <div class="col-sm-3">
@@ -309,45 +364,6 @@ Non-compliance can result in fines up to €30,000.
                     </div>
 
                     <div class="row g-3">
-                        <div class="col-sm-4">
-                            <label class="form-label" for="firstName">First name</label>
-                            <input class="form-control" id="firstName" placeholder="" required type="text" value="" name="firstName">
-                            <div class="invalid-feedback">Your name is required</div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <label class="form-label" for="lastName1">Last name</label>
-                            <input class="form-control" id="lastName1" placeholder="" required type="text" value=""
-                                name="lastName1">
-                            <div class="invalid-feedback">Fist sur-name is required.</div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <label class="form-label" for="lastName2">Seconds sur-name</label>
-                            <input class="form-control" id="lastName2" placeholder="" type="text" value=""
-                                name="lastName2">
-                            <div class="invalid-feedback">
-                                Se requiere segundo apellido.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-sm-4">
-                            <label class="form-label" for="gender">Sex</label>
-                            <select class="form-select" id="gender" required name="gender">
-                                <option value="">Select...</option>
-                                <option value="F">Female</option>
-                                <option value="M">Male</option>
-                            </select>
-                            <div class="invalid-feedback">It is required to provide your sex.</div>
-                        </div>
-
-                        <div class="col-sm-3">
-                            <label class="form-label" for="dateOfBirth">Date of birth</label>
-                            <input class="form-control" id="dateOfBirth" placeholder="" required type="date" value="" name="dateOfBirth">
-                            <div class="invalid-feedback">Your date of birth is required.</div>
-                        </div>
                     </div>
 
                     <hr class="my-4">
