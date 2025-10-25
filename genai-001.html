@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Fuerteventura</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: Desert Sands & Sky (Warm neutrals: stone-50, stone-100, stone-800. Calming accent: sky-600, sky-700) -->
+    <!-- Application Structure Plan: The source report is a sitemap for a multi-page Google Site. For a single-page application (SPA), a long scrolling page is user-unfriendly, especially for a guest needing quick info (e.g., Wi-Fi). Therefore, I've designed a tab-based dashboard. The 7 report sections are regrouped into 5 logical tabs: Home, Arrival/Departure, Home Guide, Explore, and Safety & Rules. The 'Home' tab acts as a true dashboard with "Quick Access" buttons for the most critical info. These buttons are JS-powered to not only switch to the correct tab but also auto-open the relevant accordion (e.g., clicking 'Wi-Fi' jumps to the 'Home Guide' tab and opens the 'Wi-Fi' details). Sub-pages from the report are translated into interactive accordions within each tab to keep the UI clean and scannable. This structure prioritizes task-completion and ease of navigation over mirroring the report's simple list. -->
+    <!-- Visualization & Content Choices: Report Info: All content is hierarchical text. Goal: Inform, Organize, and provide quick reference. Viz/Presentation Method: 1) Main sections: A persistent tabbed navigation bar (HTML/Tailwind/JS). 2) Sub-sections: Collapsible accordions (HTML/Tailwind/JS) to manage content density. 3) Quick Links: Large, clear buttons on the Home tab. 4) Icons: Unicode emojis are used for visual guidance (per NO SVG rule). Interaction: 1) Clicking a tab shows/hides the relevant content panel. 2) Clicking an accordion header expands/collapses its content with a smooth transition. 3) Clicking a "Quick Access" button fires a JS function to switch tabs, find the target accordion, open it, and scroll to it. Justification: This interactive model is ideal for a reference guide, allowing users to scan top-level topics (tabs), then drill down into sub-topics (accordions) as needed, providing a fast, "app-like" experience. Library/Method: Vanilla JavaScript for all interactivity. No charts are needed as the source report contains no quantitative data. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-button.open + .accordion-content {
+            max-height: 1500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .accordion-arrow {
+            transition: transform 0.3s ease-out;
+        }
+
+        .accordion-button.open .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .nav-tab {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .nav-tab.active {
+            border-bottom-color: #0284c7;
+            color: #0284c7;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 font-sans text-stone-800 antialiased">
+
+    <header class="bg-sky-700 text-white p-5 shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-bold text-center" id="property-name">Welcome to [Your Property Name]</h1>
+    </header>
+
+    <nav class="sticky top-0 z-10 bg-white shadow-md">
+        <div class="max-w-5xl mx-auto flex justify-between items-center overflow-x-auto">
+            <button class="nav-tab flex-1 py-4 px-2 text-center text-sm md:text-base font-medium text-stone-600 border-b-4 border-transparent hover:bg-stone-100 hover:text-sky-600 active" data-tab="home">
+                <span class="block text-xl">🏠</span>Home
+            </button>
+            <button class="nav-tab flex-1 py-4 px-2 text-center text-sm md:text-base font-medium text-stone-600 border-b-4 border-transparent hover:bg-stone-100 hover:text-sky-600" data-tab="arrival">
+                <span class="block text-xl">✈️</span>Arrival & Departure
+            </button>
+            <button class="nav-tab flex-1 py-4 px-2 text-center text-sm md:text-base font-medium text-stone-600 border-b-4 border-transparent hover:bg-stone-100 hover:text-sky-600" data-tab="guide">
+                <span class="block text-xl">📖</span>Home Guide
+            </button>
+            <button class="nav-tab flex-1 py-4 px-2 text-center text-sm md:text-base font-medium text-stone-600 border-b-4 border-transparent hover:bg-stone-100 hover:text-sky-600" data-tab="explore">
+                <span class="block text-xl">🏝️</span>Explore
+            </button>
+            <button class="nav-tab flex-1 py-4 px-2 text-center text-sm md:text-base font-medium text-stone-600 border-b-4 border-transparent hover:bg-stone-100 hover:text-sky-600" data-tab="safety">
+                <span class="block text-xl">⚠️</span>Safety & Rules
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-6">
+
+        <section id="home" class="content-section active">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-stone-200">
+                <h2 class="text-2xl font-semibold text-sky-700 mb-4">Your Fuerteventura Getaway</h2>
+                <p class="text-stone-700 mb-6">
+                    Welcome! We're thrilled to have you. This guide is your personal digital concierge, designed to help you settle in and make the most of your stay. On this home screen, you'll find quick links to the most essential information. Use the tabs above to explore everything else, from appliance guides to local restaurant recommendations.
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button data-target-tab="guide" data-target-accordion="acc-wifi" class="quick-link bg-sky-600 text-white p-4 rounded-lg shadow-md hover:bg-sky-500 transition-colors flex flex-col items-center justify-center h-28">
+                        <span class="text-3xl mb-1">📡</span>
+                        <span class="font-semibold">Wi-Fi Details</span>
+                    </button>
+                    <button data-target-tab="arrival" data-target-accordion="acc-checkin" class="quick-link bg-sky-600 text-white p-4 rounded-lg shadow-md hover:bg-sky-500 transition-colors flex flex-col items-center justify-center h-28">
+                        <span class="text-3xl mb-1">🔑</span>
+                        <span class="font-semibold">Check-in Guide</span>
+                    </button>
+                    <button data-target-tab="safety" data-target-accordion="acc-emergency" class="quick-link bg-red-600 text-white p-4 rounded-lg shadow-md hover:bg-red-500 transition-colors flex flex-col items-center justify-center h-28">
+                        <span class="text-3xl mb-1">🚑</span>
+                        <span class="font-semibold">Emergency Info</span>
+                    </button>
+                    <button data-target-tab="arrival" data-target-accordion="acc-finding" class="quick-link bg-sky-600 text-white p-4 rounded-lg shadow-md hover:bg-sky-500 transition-colors flex flex-col items-center justify-center h-28">
+                        <span class="text-3xl mb-1">📍</span>
+                        <span class="font-semibold">Our Address</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="arrival" class="content-section space-y-4">
+            <p class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 text-stone-700">This section covers everything you need for a smooth journey to the property and a hassle-free departure. Find details on getting here from the airport, the check-in process, and the checklist for when it's time to say goodbye.</p>
+            
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-getting">
+                    <h3 class="text-lg font-semibold text-sky-700">Getting to Fuerteventura</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <ul class="list-disc list-inside">
+                        <li><strong>Airport Information:</strong> You'll be flying into Fuerteventura Airport (FUE).</li>
+                        <li><strong>Car Rental:</strong> We highly recommend renting a car. Cicar, AutoReisen, and Payless are popular local options.</li>
+                        <li><strong>Taxi & Bus:</strong> Taxis are available at the airport. The local 'Tiadhe' bus service connects the island.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button id="acc-finding" class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-finding">
+                    <h3 class="text-lg font-semibold text-sky-700">Finding Us (The Property)</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <p><strong>Full Address:</strong> [Your Full Address Here]</p>
+                    <p>We recommend using Google Maps. Here is a direct link: [Your Google Maps Link Here]</p>
+                    <p><strong>Driving/Parking:</strong> [Detailed driving/parking instructions, e.g., "From the airport, take the FV-2 towards... Look for the green gate on your left. Parking is free on the street in front of the property."]</p>
+                    <p><em>(You can embed a photo of the front of the property here in Google Sites)</em></p>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button id="acc-checkin" class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-checkin">
+                    <h3 class="text-lg font-semibold text-sky-700">Check-in Process</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <p><strong>Check-in Time:</strong> From 15:00 (3:00 PM)</p>
+                    <p><strong>Key Collection:</strong> [Detailed, step-by-step instructions. e.g., "The lockbox is located to the left of the main door. The code is <strong>1234</strong>. Slide the black cover down, enter the code, and pull the front of the box open."]</p>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-packing">
+                    <h3 class="text-lg font-semibold text-sky-700">What to Pack (A Fuerteventura Guide)</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <ul class="list-disc list-inside">
+                        <li><strong>Windbreaker:</strong> Fuerteventura is famously windy! A light jacket is essential, even in summer.</li>
+                        <li><strong>Reef-Safe Sunscreen:</strong> Please help us protect the ocean.</li>
+                        <li><strong>Beach Towels:</strong> We provide bath towels, but [clarify if you provide beach towels or not].</li>
+                        <li><strong>Plug Adapters:</strong> We use standard European two-pin plugs (Type F).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button id="acc-checkout" class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-checkout">
+                    <h3 class="text-lg font-semibold text-sky-700">Check-Out Process</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <p><strong>Check-out Time:</strong> By 11:00 (11:00 AM)</p>
+                    <p><strong>Departure Checklist:</strong></p>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Please dispose of all trash in the main bins.</li>
+                        <li>Please wash and put away any used dishes.</li>
+                        <li>Turn off all A/C units and lights.</li>
+                        <li>Close and lock all windows and doors.</li>
+                    </ul>
+                    <p><strong>Key Return:</strong> Please place the key back in the lockbox and scramble the code.</p>
+                    <p class="font-semibold pt-2">Thank you for staying with us! We'd be grateful if you left a review. [Link to Airbnb/VRBO]</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="guide" class="content-section space-y-4">
+            <p class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 text-stone-700">Here you'll find the "user manual" for the house. This section has all the details on how to use the appliances, connect to the Wi-Fi, and manage utilities like trash and recycling. If you're wondering "how does this work?", the answer is probably in here.</p>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button id="acc-wifi" class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-wifi">
+                    <h3 class="text-lg font-semibold text-sky-700">Wi-Fi & Passwords</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <p><strong>Network Name (SSID):</strong> [Your Wi-Fi Network Name]</p>
+                    <p><strong>Password:</strong> [Your Wi-Fi Password]</p>
+                    <p class="text-sm text-stone-600">The router is located [location of router]. If you have issues, try unplugging it for 10 seconds and plugging it back in.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-kitchen">
+                    <h3 class="text-lg font-semibold text-sky-700">Kitchen & Appliances</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>Coffee Machine:</strong> [How to use, what kind of pods/filters, e.g., "Uses Nespresso-compatible pods. Pods are in the drawer."].</div>
+                    <div class="pt-3"><strong>Oven & Hob:</strong> [Brief instructions, e.g., "The hob is induction, you must use the provided pans. The oven controls are..."]</div>
+                    <div class="pt-3"><strong>Microwave:</strong> [Instructions if needed].</div>
+                    <div class="pt-3"><strong>Dishwasher:</strong> [e.g., "Please use one of the provided tablets (under the sink)."]</div>
+                    <div class="pt-3"><strong>Washer/Dryer:</strong> [e.g., "Located in the utility closet. Please use the provided liquid detergent."]</div>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-comfort">
+                    <h3 class="text-lg font-semibold text-sky-700">Entertainment & Comfort</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>TV & Remotes:</strong> [e.g., "Use the Samsung remote for the TV. Netflix and other apps are pre-installed."]</div>
+                    <div class="pt-3"><strong>Air Conditioning / Fans:</strong> [e.g., "Remotes for the A/C are on the wall. Please turn off when you go out."]</div>
+                    <div class="pt-3"><strong>Bluetooth Speaker:</strong> [e.g., "The speaker is named 'Guest Speaker'. Hold the power button to connect."]</div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-outdoor">
+                    <h3 class="text-lg font-semibold text-sky-700">Outdoor Spaces</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>Pool/Hot Tub:</strong> [e.g., "Pool hours are 9am-9pm. Please supervise children. The hot tub controls are..."]</div>
+                    <div class="pt-3"><strong>BBQ:</strong> [e.g., "This is a charcoal BBQ. Please use it safely away from the wall and clean the grill after use."]</div>
+                    <div class="pt-3"><strong>Terrace Furniture:</strong> [e.g., "Please bring the cushions inside if it looks like rain or is very windy."]</div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-utilities">
+                    <h3 class="text-lg font-semibold text-sky-700">Utilities (Trash, Water, etc.)</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>Trash & Recycling:</strong> [e.g., "The large community bins are located [location]. Green is for general waste, yellow for plastic/cans, blue for paper."]</div>
+                    <div class="pt-3"><strong>Hot Water / Boiler:</strong> [e.g., "The boiler is electric and provides instant hot water."]</div>
+                    <div class="pt-3"><strong>Circuit Breaker:</strong> [e.g., "The main electrical panel is located in the utility closet."]</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="explore" class="content-section space-y-4">
+            <p class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 text-stone-700">This is the fun part! Fuerteventura is an amazing island, and this section is your personal guide. We've combined our favorite local spots, must-see attractions, and top food and drink recommendations. Whether you want to find the best beach or the perfect tapas bar, start here.</p>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-beaches">
+                    <h3 class="text-lg font-semibold text-sky-700">Our Favorite Beaches</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>For Families:</strong> [e.g., "El Cotillo Lagoons - Shallow, calm water, perfect for kids."]</div>
+                    <div class="pt-3"><strong>For Surfing/Kitesurfing:</strong> [e.g., "Flag Beach (Corralejo) - World-famous for wind sports."]</div>
+                    <div class="pt-3"><strong>Secluded & Quiet:</strong> [e.g., "Cofete - A massive, wild beach. Needs a 4x4 to access but is worth it."]</div>
+                    <div class="pt-3"><strong>The Famous Dunes:</strong> [e.g., "Corralejo Dunes - Miles of white sand dunes meet turquoise water."]</div>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-towns">
+                    <h3 class="text-lg font-semibold text-sky-700">Towns & Villages to Visit</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>Corralejo:</strong> The main northern resort. Great shops, restaurants, and access to the dunes/Lobos Island.</div>
+                    <div class="pt-3"><strong>El Cotillo:</strong> A charming fishing village with beautiful lagoons and the best sunset spots.</div>
+                    <div class="pt-3"><strong>Betancuria:</strong> The beautiful, historic old capital of the island, nestled in the mountains.</div>
+                    <div class="pt-3"><strong>Morro Jable:</strong> The main resort in the south, with a lighthouse and long golden beaches.</div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-activities">
+                    <h3 class="text-lg font-semibold text-sky-700">Top Activities & Attractions</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <ul class="list-disc list-inside">
+                        <li>Oasis Wildlife Park (south)</li>
+                        <li>Acua Water Park (Corralejo)</li>
+                        <li>Surfing / Kitesurfing / Windsurfing Schools (all over)</li>
+                        <li>Hiking & Volcanoes (e.g., Calderón Hondo)</li>
+                        <li>Boat trips to Lobos Island (from Corralejo)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-canaryfood">
+                    <h3 class="text-lg font-semibold text-sky-700">A Taste of the Canaries</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <p>Don't leave without trying:</p>
+                    <ul class="list-disc list-inside">
+                        <li><strong>Majorero Cheese:</strong> The local goat's cheese, it's world-famous!</li>
+                        <li><strong>Papas Arrugadas:</strong> "Wrinkled potatoes" boiled in salt water, served with red & green 'mojo' sauce.</li>
+                        <li><strong>Gofio:</strong> A toasted grain flour used in everything from breakfast to stews.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-eating">
+                    <h3 class="text-lg font-semibold text-sky-700">Where to Eat (Our Picks)</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>Best for Tapas:</strong> [Restaurant Name, Location, Map Link]</div>
+                    <div class="pt-3"><strong>Best for Fresh Fish:</strong> [Restaurant Name, Location, Map Link]</div>
+                    <div class="pt-3"><strong>Best for Breakfast & Coffee:</strong> [Restaurant Name, Location, Map Link]</div>
+                    <div class="pt-3"><strong>Special Occasion:</strong> [Restaurant Name, Location, Map Link]</div>
+                    <div class="pt-3"><strong>Casual & Family-Friendly:</strong> [Restaurant Name, Location, Map Link]</div>
+                </div>
+            </div>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-bars">
+                    <h3 class="text-lg font-semibold text-sky-700">Best Bars</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3"><strong>Sunset Drinks:</strong> [Bar Name, Location]</div>
+                    <div class="pt-3"><strong>Cocktail Bars:</strong> [Bar Name, Location]</div>
+                    <div class="pt-3"><strong>Local "Cervecerias":</strong> [Bar Name, Location]</div>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-groceries">
+                    <h3 class="text-lg font-semibold text-sky-700">Groceries & Shopping</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <ul class="list-disc list-inside">
+                        <li><strong>Supermarkets:</strong> The closest is [Supermarket Name] at [Location]. You will also find Lidl, Mercadona, and Spar nearby.</li>
+                        <li><strong>Local Markets:</strong> [e.g., "Corralejo Market on Tuesdays/Fridays for produce and cheese."]</li>
+                        <li><strong>Pharmacy:</strong> The nearest "Farmacia" is at [Location].</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="safety" class="content-section space-y-4">
+            <p class="bg-white p-6 rounded-lg shadow-sm border border-stone-200 text-stone-700">Your safety and comfort are our top priorities. This section outlines the house rules and provides all necessary emergency contact information. Please take a moment to read it over.</p>
+
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-rules">
+                    <h3 class="text-lg font-semibold text-sky-700">Our House Rules</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-2">
+                    <ul class="list-disc list-inside">
+                        <li>No smoking or vaping inside the property.</li>
+                        <li>No parties or events. Please respect our neighbors and observe quiet hours from 22:00 (10 PM) to 8:00 (8 AM).</li>
+                        <li>Pets are not permitted.</li>
+                        <li>Only registered guests are allowed to stay overnight.</li>
+                        <li>Please treat our home with respect, as if it were your own.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="accordion-item bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <button id="acc-emergency" class="accordion-button w-full flex justify-between items-center p-5 text-left hover:bg-stone-100 transition-colors" data-accordion-id="acc-emergency">
+                    <h3 class="text-lg font-semibold text-red-700">Emergency & Safety</h3>
+                    <span class="accordion-arrow text-2xl text-stone-500">▼</span>
+                </button>
+                <div class="accordion-content px-5 pb-5 text-stone-700 space-y-3 divide-y divide-stone-200">
+                    <div class="pt-3">
+                        <strong class="text-red-600 text-lg">All-Spain Emergency Number: 112</strong>
+                        <p>(For Police, Fire, or Medical emergencies)</p>
+                    </div>
+                    <div class="pt-3"><strong>Our Contact Info (Your Name):</strong> [Your Phone/WhatsApp Number]</div>
+                    <div class="pt-3"><strong>Property Manager (if any):</strong> [Manager Name & Number]</div>
+                    <div class="pt-3"><strong>Local Clinic / Hospital:</strong> [Name, Address, and Map Link]</div>
+                    <div class="pt-3"><strong>Pharmacy:</strong> [Nearest Pharmacy Address]</div>
+                    <div class="pt-3"><strong>In the house:</strong>
+                        <ul class="list-disc list-inside ml-4">
+                            <li><strong>First Aid Kit:</strong> Located [e.g., in the kitchen drawer].</li>
+                            <li><strong>Fire Extinguisher:</strong> Located [e.g., under the sink].</li>
+                            <li><strong>Fire Blanket:</strong> Located [e.g., on the kitchen wall].</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-6 mt-8 text-stone-500 text-sm">
+        <p>We hope you have a wonderful stay!</p>
+        <p class="mt-1">&copy; 2025 [Your Property Name]</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const tabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('.content-section');
+
+            function setupTabs() {
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        const tabId = tab.dataset.tab;
+
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+
+                        sections.forEach(section => {
+                            if (section.id === tabId) {
+                                section.classList.add('active');
+                            } else {
+                                section.classList.remove('active');
+                            }
+                        });
+                    });
+                });
+            }
+
+            function setupAccordions() {
+                const accordionButtons = document.querySelectorAll('.accordion-button');
+                accordionButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        button.classList.toggle('open');
+                    });
+                });
+            }
+
+            function setupQuickLinks() {
+                const quickLinks = document.querySelectorAll('.quick-link');
+                quickLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        const tabId = link.dataset.targetTab;
+                        const accordionId = link.dataset.targetAccordion;
+
+                        const targetTabButton = document.querySelector(`.nav-tab[data-tab="${tabId}"]`);
+                        if (targetTabButton) {
+                            targetTabButton.click();
+                        }
+                        
+                        setTimeout(() => {
+                            const targetAccordionButton = document.getElementById(accordionId);
+                            if (targetAccordionButton) {
+                                if (!targetAccordionButton.classList.contains('open')) {
+                                    targetAccordionButton.click();
+                                }
+                                targetAccordionButton.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 300);
+                    });
+                });
+            }
+            
+            setupTabs();
+            setupAccordions();
+            setupQuickLinks();
+
+            const propertyName = prompt("What is your property's name?", "Casa del Sol");
+            if (propertyName) {
+                document.getElementById('property-name').textContent = `Welcome to ${propertyName}`;
+                document.title = `Welcome to ${propertyName}`;
+            }
+
+        });
+    </script>
+
+</body>
+</html>
